@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:zeebe="http://camunda.org/schema/zeebe/1.0" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_1sit2n5" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.27.0" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.6.0">
+  <bpmn:process id="delivery_demo" isExecutable="true">
+    <bpmn:extensionElements />
+    <bpmn:userTask id="MoveToDeliveryPoint" name="前往送餐点">
+      <bpmn:extensionElements>
+        <zeebe:ioMapping>
+          <zeebe:input source="=deliveryman" target="handler" />
+        </zeebe:ioMapping>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1gophov</bpmn:incoming>
+      <bpmn:outgoing>Flow_10omumv</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:userTask id="MoveToRestaurant" name="前往外卖店">
+      <bpmn:extensionElements>
+        <zeebe:ioMapping>
+          <zeebe:input source="=deliveryman" target="handler" />
+        </zeebe:ioMapping>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_09n5ovt</bpmn:incoming>
+      <bpmn:outgoing>Flow_1gophov</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:endEvent id="Event_1u1n8zx">
+      <bpmn:incoming>Flow_10omumv</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_09n5ovt" sourceRef="StartEvent_1" targetRef="MoveToRestaurant" />
+    <bpmn:sequenceFlow id="Flow_10omumv" sourceRef="MoveToDeliveryPoint" targetRef="Event_1u1n8zx" />
+    <bpmn:sequenceFlow id="Flow_1gophov" sourceRef="MoveToRestaurant" targetRef="MoveToDeliveryPoint" />
+    <bpmn:startEvent id="StartEvent_1">
+      <bpmn:outgoing>Flow_09n5ovt</bpmn:outgoing>
+    </bpmn:startEvent>
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="delivery_demo">
+      <bpmndi:BPMNShape id="BPMNShape_02hvloc" bpmnElement="MoveToDeliveryPoint">
+        <dc:Bounds x="460" y="77" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1u1n8zx_di" bpmnElement="Event_1u1n8zx">
+        <dc:Bounds x="632" y="99" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
+        <dc:Bounds x="152" y="99" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0zwqz07_di" bpmnElement="MoveToRestaurant">
+        <dc:Bounds x="260" y="77" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_09n5ovt_di" bpmnElement="Flow_09n5ovt">
+        <di:waypoint x="188" y="117" />
+        <di:waypoint x="260" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_10omumv_di" bpmnElement="Flow_10omumv">
+        <di:waypoint x="560" y="117" />
+        <di:waypoint x="632" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1gophov_di" bpmnElement="Flow_1gophov">
+        <di:waypoint x="360" y="117" />
+        <di:waypoint x="460" y="117" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

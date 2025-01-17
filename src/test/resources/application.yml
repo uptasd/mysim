@@ -1,0 +1,27 @@
+simulation:
+  log:
+    action:
+      target: mysql
+      auto-log: true
+  container:
+    time-unit: minutes
+    start-time: "2025-01-01 08:00:00"
+spring:
+  data:
+    redis:
+      host: 192.168.88.101
+      port: 6379
+      password: 123456
+      database: 2
+  datasource:
+    url: jdbc:mysql://192.168.88.101:3306/tmp?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&useSSL=false&allowPublicKeyRetrieval=true
+    username: root
+    password: 123
+logging:
+  level:
+    com.mysim.core.log.ActionLogMapper: INFO # 将 MyBatis Mapper 的日志级别设置为 WARN
+#    org.mysim.*: DEBUG
+    com.zaxxer.hikari: OFF
+
+
+
