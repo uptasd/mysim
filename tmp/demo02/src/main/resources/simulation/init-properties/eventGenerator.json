@@ -1,0 +1,10 @@
+[
+  {
+    "simulatorId": "BadWeather",
+    "simulatorType": "BadWeather",
+    "eventContinueTurn": 2,
+    "subscriberTypes": [
+      "deliveryman"
+    ]
+  }
+]

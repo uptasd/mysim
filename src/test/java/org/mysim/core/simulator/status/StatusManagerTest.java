@@ -1,8 +1,7 @@
 package org.mysim.core.simulator.status;
 
-import jade.wrapper.StaleProxyException;
 import org.junit.jupiter.api.Test;
-import org.mysim.core.rt.container.SimulationContainer;
+import org.mysim.core.rt.container.BaseContainer;
 import org.mysim.core.message.SimMessage;
 import org.mysim.core.simulator.ResourceSimulator;
 import org.mysim.core.simulator.Simulator;
@@ -56,9 +55,9 @@ class StatusManagerTest {
         receiverAI.registerBpmnActorInfo("attack", actionInfo);
         Simulator sender = new ResourceSimulator(testProperty, senderAI);
         Simulator receiver = new ResourceSimulator(testProperty2, receiverAI);
-        SimulationContainer simulationContainer = new SimulationContainer();
-        simulationContainer.loadSimulator(sender);
-        simulationContainer.loadSimulator(receiver);
+        BaseContainer baseContainer = new BaseContainer();
+        baseContainer.loadSimulator(sender);
+        baseContainer.loadSimulator(receiver);
         sender.getSimulatorStatus().getAllStatus();
         senderAI.step();
         boolean messageReceived = countDownLatch.await(5, TimeUnit.SECONDS);

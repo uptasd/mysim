@@ -20,7 +20,7 @@ public class SimulatorMetaInfoLoader {
 
     public static void loadConfig(String configFilePath) {
         Yaml yaml = new Yaml();
-        try (InputStream inputStream = SimulatorFactory.class.getClassLoader().getResourceAsStream(configFilePath)) {
+        try (InputStream inputStream = SimulatorMetaInfoLoader.class.getClassLoader().getResourceAsStream(configFilePath)) {
             List<Object> infos = yaml.loadAs(inputStream, List.class);
             for (Object obj : infos) {
                 SimulatorMetaInfo info = JsonUtils.mapToObj(obj, SimulatorMetaInfo.class);

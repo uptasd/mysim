@@ -1,13 +1,15 @@
 package org.mysim.core.rt.scheduler;
 
 import jade.core.Agent;
-import org.mysim.core.rt.container.SimulationContainer;
+import org.mysim.core.rt.container.BaseContainer;
 import org.mysim.core.simulator.Simulator;
 
 import java.util.Collection;
 
 public interface Scheduler {
     void loadSimulator(Simulator simulator);
+
+    void removeSimulator(String simulatorId);
 
     Collection<Simulator> getSimulators();
 
@@ -21,5 +23,6 @@ public interface Scheduler {
     int getPriority();
 
     Agent getAgent();
-    void setSimulationContainer(SimulationContainer container);
+
+    void setSimulationContainer(BaseContainer container);
 }

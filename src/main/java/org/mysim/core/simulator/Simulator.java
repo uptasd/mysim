@@ -1,17 +1,13 @@
 package org.mysim.core.simulator;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
-import org.mysim.core.events.action.SimulationActor;
-import org.mysim.core.events.action.external.ExternalEventActor;
 import org.mysim.core.message.MessageProxy;
 import org.mysim.core.message.SimMessage;
-import org.mysim.core.rt.container.SimulationContainer;
+import org.mysim.core.rt.container.BaseContainer;
+import org.mysim.core.rt.scheduler.Scheduler;
 import org.mysim.core.simulator.ai.ResourceAI;
 import org.mysim.core.simulator.ai.SimulatorAI;
-import org.mysim.core.simulator.config.ActionInfo;
 import org.mysim.core.simulator.status.SimulatorProperty;
 import org.mysim.core.simulator.status.SimulatorStatus;
 import org.mysim.core.simulator.status.StatusManager;
@@ -19,22 +15,23 @@ import org.mysim.core.simulator.status.StatusManager;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 //@Data
 @Setter
 @Getter
 public abstract class Simulator implements SimulatorAction {
-    SimulatorProperty simulatorProperty;
+    volatile SimulatorProperty simulatorProperty;
     SimulatorStatus simulatorStatus;
     SimulatorAI simulatorAI;
     SimulatorAgent agent;
     MessageProxy messageProxy;
-    SimulationContainer container;
+    BaseContainer container;
 
     public Simulator(String simulatorId) {
         simulatorProperty = new SimulatorProperty();
         simulatorProperty.setSimulatorId(simulatorId);
-       setSimulatorAI(new ResourceAI(this)) ;
+        setSimulatorAI(new ResourceAI(this));
         init();
     }
 
@@ -81,6 +78,11 @@ public abstract class Simulator implements SimulatorAction {
     }
 
     @Override
+    public List<SimMessage> blockingReceive(String conversationId, long timeMills, Set<String> expectedIds) {
+        return messageProxy.blockingReceive(conversationId, timeMills, expectedIds);
+    }
+
+    @Override
     public List<SimMessage> blockingReceive(String conversationId, long timeMills, int num) {
         return messageProxy.blockingReceive(conversationId, timeMills, num);
     }
@@ -93,6 +95,9 @@ public abstract class Simulator implements SimulatorAction {
     @Override
     public void deregister() {
         simulatorAI.doDelete();
+        String schedulerId = simulatorProperty.getSchedulerId();
+        Scheduler scheduler = container.getSchedulerById(schedulerId);
+        scheduler.removeSimulator(getSimulatorProperty().getSimulatorId());
     }
 
     public Map<String, List<String>> getAllActorId() {

@@ -1,0 +1,30 @@
+[
+  {
+    "simulatorId": "deliveryman1",
+    "simulatorType": "deliveryman",
+    "location": {
+      "x": 121.534049,
+      "y": 36.91766
+    },
+    "speed": 10,
+    "workHour": "08:00",
+    "offHour": "19:00",
+    "functions": [
+      "handle delivery order"
+    ]
+  },
+  {
+    "simulatorId": "deliveryman2",
+    "simulatorType": "deliveryman",
+    "location": {
+      "x": 121.534049,
+      "y": 36.91766
+    },
+    "speed": 20,
+    "workHour": "08:00",
+    "offHour": "19:00",
+    "functions": [
+      "handle delivery order"
+    ]
+  }
+]

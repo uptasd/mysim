@@ -2,7 +2,7 @@ package org.mysim.core.rt.scheduler;
 
 import org.mysim.core.message.SystemMessageFactory;
 import org.mysim.core.message.SimMessage;
-import org.mysim.core.rt.container.SimulationContainer;
+import org.mysim.core.rt.container.BaseContainer;
 import org.mysim.core.simulator.Simulator;
 
 import java.util.*;
@@ -47,7 +47,7 @@ public class ConcurrentScheduler extends Simulator implements Scheduler {
         String conversationId = boardCastMessage(targetIds, stepMessage);
         blockingReceive(conversationId, 2 * 1000, targetIds.size());
     }
-
+    @Override
     public void removeSimulator(String simulatorId) {
         simulators.remove(simulatorId);
     }
@@ -63,7 +63,7 @@ public class ConcurrentScheduler extends Simulator implements Scheduler {
     }
 
     @Override
-    public void setSimulationContainer(SimulationContainer container) {
+    public void setSimulationContainer(BaseContainer container) {
         setContainer(container);
     }
 

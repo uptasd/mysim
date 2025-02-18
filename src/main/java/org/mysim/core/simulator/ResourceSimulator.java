@@ -12,6 +12,7 @@ public class ResourceSimulator extends Simulator {
     public ResourceSimulator(SimulatorProperty simulatorProperty) {
         super(simulatorProperty);
     }
+    //用于测试
     @Deprecated
     public ResourceSimulator(String simulatorId) {
         super(simulatorId);

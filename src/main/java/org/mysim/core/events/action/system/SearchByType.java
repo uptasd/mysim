@@ -2,9 +2,8 @@ package org.mysim.core.events.action.system;
 
 import org.mysim.core.events.action.ActionContext;
 import org.mysim.core.message.SimMessage;
-import org.mysim.core.rt.container.SimulationContainer;
+import org.mysim.core.rt.container.BaseContainer;
 import org.mysim.core.simulator.ai.SimulatorAI;
-import org.mysim.core.simulator.status.SimulatorProperty;
 import org.mysim.core.utils.JsonUtils;
 
 import java.util.HashMap;
@@ -28,7 +27,7 @@ public class SearchByType extends SystemActor {
 
     private Map<String, List<String>> getSimulators(SearchByTypePayLoad payLoad) {
         List<String> simulatorTypes = payLoad.getSimulatorTypes();
-        SimulationContainer container = simulatorAI.getContainer();
+        BaseContainer container = simulatorAI.getContainer();
         Map<String, List<String>> simulators = new HashMap<>();
         if (simulatorTypes != null && !simulatorTypes.isEmpty()) {
             for (String type : simulatorTypes) {

@@ -46,6 +46,9 @@ public class MoveToRestaurant extends BPMNActor {
 
     @Override
     public boolean isDone() {
+        if(cnt <= 0){
+            System.out.println("move to res done");
+        }
         return cnt <= 0;
     }
 

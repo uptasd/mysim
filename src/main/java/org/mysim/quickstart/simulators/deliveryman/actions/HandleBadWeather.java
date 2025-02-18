@@ -30,6 +30,5 @@ public class HandleBadWeather extends ExternalEventActor {
         DeliverymanProperty deliverymanProperty = (DeliverymanProperty) getSimulatorProperty();
         Double speed = deliverymanProperty.getSpeed();
         deliverymanProperty.setSpeed(speed + 5);
-
     }
 }

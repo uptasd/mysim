@@ -6,12 +6,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.http.HttpHost;
 import org.elasticsearch.client.RestClient;
 import org.elasticsearch.client.RestHighLevelClient;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 @Slf4j
 public class CamundaConfig {

@@ -1,6 +1,8 @@
 package org.mysim.core.events.action.external;
 
 import lombok.extern.slf4j.Slf4j;
+import org.mysim.config.ActionLogConfig;
+import org.mysim.config.SimulationConfig;
 import org.mysim.core.events.action.ActionContext;
 import org.mysim.core.log.ActionLog;
 import org.mysim.core.events.action.SimulationActor;
@@ -34,7 +36,9 @@ public abstract class ExternalEventActor extends SimulationActor {
             StatusManager.checkAndUpdateStates(getSimulatorProperty(), getSimulatorStatus());
             String propertyUpdate = propertyUpdateDesc(beforeProperty, getSimulatorProperty());
             String statusUpdate = statusUpdateDesc(beforeStatus, getSimulatorStatus());
-            simulatorAI.logAction(buildActionLog(propertyUpdate, statusUpdate));
+            if (ActionLogConfig.getInstance().isAutoLog()) {
+                simulatorAI.logAction(buildActionLog(propertyUpdate, statusUpdate));
+            }
             context.clearContext();
         } catch (IOException | ClassNotFoundException e) {
             throw new RuntimeException(e);
@@ -111,7 +115,7 @@ public abstract class ExternalEventActor extends SimulationActor {
             log.debug("{}已经感知到事件{}正在发生，忽略此事件", simulatorId, eventName);
         } else {
 //            Map<String, Object> propertyMap = getPropertyMap();
-            onActivated( eventContext.getArgs());
+            onActivated(eventContext.getArgs());
             onFinished(eventContext.getArgs());
 //            MapToProperty(propertyMap);
         }

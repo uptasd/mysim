@@ -1,15 +1,11 @@
 package org.mysim.core.utils;
 
-import lombok.Getter;
 import org.mysim.config.SimulationConfig;
-import org.mysim.core.rt.container.SimulationContainer;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
-import java.util.HashMap;
-import java.util.Map;
 
 @Component
 public class TimeUtils {

@@ -1,7 +1,7 @@
 package org.mysim.core.rt.scheduler;
 
 import lombok.extern.slf4j.Slf4j;
-import org.mysim.core.rt.container.SimulationContainer;
+import org.mysim.core.rt.container.BaseContainer;
 import org.mysim.core.simulator.Simulator;
 
 
@@ -13,8 +13,8 @@ import java.util.Map;
 public class AnnotationProcessor {
     private static final Map<Class<? extends Annotation>, AnnotationProcessingStrategy> strategies = new HashMap<>();
 
-    public AnnotationProcessor(SimulationContainer simulationContainer) {
-        addStrategy(ScheduledBy.class, new ScheduledByProcessor(simulationContainer));
+    public AnnotationProcessor(BaseContainer baseContainer) {
+        addStrategy(ScheduledBy.class, new ScheduledByProcessor(baseContainer));
     }
 
     public static void addStrategy(Class<? extends Annotation> annotationClass, AnnotationProcessingStrategy strategy) {

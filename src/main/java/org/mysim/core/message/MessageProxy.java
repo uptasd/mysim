@@ -11,16 +11,16 @@ import org.mysim.core.simulator.Simulator;
 import org.mysim.core.simulator.SimulatorAgent;
 import org.mysim.core.simulator.status.SimulatorProperty;
 import org.mysim.core.utils.JsonUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 public class MessageProxy {
+    private static final Logger log = LoggerFactory.getLogger(MessageProxy.class);
     SimulatorAgent agent;
     SimulatorProperty property;
 
@@ -94,6 +94,7 @@ public class MessageProxy {
     public boolean sendAndWaitAck(String targetId, SimMessage message, long blockingTimeMills) {
         //todo
         String sessionId = send(targetId, message);
+//        log.info("{} send msg:{}", property.getSimulatorId(), message);
         try {
             blockingReceive(sessionId, blockingTimeMills);
             return true;
@@ -101,7 +102,6 @@ public class MessageProxy {
             return false;
         }
     }
-
 
 
     public boolean boardCastAndWaitAck(Collection<String> targetIds, String conversationId) {
@@ -120,7 +120,39 @@ public class MessageProxy {
         return JsonUtils.jsonToObject(message.getContent(), SimMessage.class);
     }
 
-    public List<SimMessage> blockingReceive(String conversationId, long blockingTimeMills, int num) throws MessageTimeoutException{
+    public List<SimMessage> blockingReceive(String conversationId, long blockingTimeMills, Set<String> expectedIds) {
+        MessageTemplate mt = MessageTemplateFactory.buildMT(conversationId);
+        long startTime = System.currentTimeMillis();
+        HashSet<String> full = new HashSet<>(expectedIds);
+        List<SimMessage> replyMessages = new ArrayList<>();
+        while (!expectedIds.isEmpty()) {
+            long elapsedTime = System.currentTimeMillis() - startTime;
+            long remainingTime = blockingTimeMills - elapsedTime;
+            if (remainingTime <= 0) {
+                String timeoutMsg = String.format(
+                        "%s blocking receive time out while waiting for %d messages, not received %s",
+                        property.getSimulatorId(), full.size(), expectedIds
+                );
+                throw new MessageTimeoutException(timeoutMsg);
+            }
+            ACLMessage message = agent.blockingReceive(mt, blockingTimeMills);
+            if (message == null) {
+
+                String timeoutMsg = String.format(
+                        "%s blocking time out (%s mills) for waiting %d messages,but received %d,{%s} not replied",
+                        property.getSimulatorId(), blockingTimeMills, full.size(), replyMessages.size(), expectedIds
+                );
+                throw new MessageTimeoutException(timeoutMsg);
+            }
+
+            SimMessage simMessage = JsonUtils.jsonToObject(message.getContent(), SimMessage.class);
+            expectedIds.remove(simMessage.getSenderId());
+            replyMessages.add(simMessage);
+        }
+        return replyMessages;
+    }
+
+    public List<SimMessage> blockingReceive(String conversationId, long blockingTimeMills, int num) throws MessageTimeoutException {
         MessageTemplate mt = MessageTemplateFactory.buildMT(conversationId);
         long startTime = System.currentTimeMillis();
         List<SimMessage> replyMessages = new ArrayList<>();
@@ -136,9 +168,10 @@ public class MessageProxy {
             }
             ACLMessage message = agent.blockingReceive(mt, blockingTimeMills);
             if (message == null) {
+
                 String timeoutMsg = String.format(
-                        "%s blocking receive time out while waiting for %d messages, received %d",
-                        property.getSimulatorId(), num, replyMessages.size()
+                        "%s blocking time out (%s mills) for waiting %d messages,but received %d",
+                        property.getSimulatorId(), blockingTimeMills, num, replyMessages.size()
                 );
                 throw new MessageTimeoutException(timeoutMsg);
             }
@@ -148,8 +181,9 @@ public class MessageProxy {
         return replyMessages;
     }
 
+    @Deprecated
     public void publish(String envId, String topicId, SimMessage simMessage) {
-        //todo
+
 
     }
 

@@ -1,0 +1,12 @@
+- serviceName: delivery
+  indicators:
+    - name: totalNum
+      implement: class
+      className: org.mysim.quickstart.Calculators.DeliveryTotalNum
+    - name: successNum
+      implement: class
+      className: org.mysim.quickstart.Calculators.DeliverySuccessNum
+    - name: successRate
+      implement: formula
+      formula: ${successNum}/${totalNum}
+

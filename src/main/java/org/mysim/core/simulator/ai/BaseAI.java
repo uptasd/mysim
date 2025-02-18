@@ -5,13 +5,14 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.mysim.config.ActionLogConfig;
+import org.mysim.config.SimulationConfig;
 import org.mysim.core.log.ActionLog;
 import org.mysim.core.events.action.ServiceLog;
 import org.mysim.core.events.action.system.PullContextPayLoad;
 import org.mysim.core.events.action.system.SearchByTypePayLoad;
 import org.mysim.core.message.SimMessage;
 import org.mysim.core.message.SystemMessageFactory;
-import org.mysim.core.rt.container.SimulationContainer;
+import org.mysim.core.rt.container.BaseContainer;
 import org.mysim.core.simulator.Simulator;
 import org.mysim.core.simulator.memory.SimpleMemory;
 import org.mysim.core.simulator.memory.SimulatorMemory;
@@ -27,10 +28,10 @@ import java.util.*;
 @Setter
 @Slf4j
 public abstract class BaseAI implements SimulatorAI {
-    public Simulator simulator;
+    public volatile Simulator simulator;
     public SimulatorMemory memory;
-    public static final long PULL_CONTEXT_TIMEOUT = 1000;
-    public static final long SEARCH_SIMULATOR_TIMEOUT = 1000;
+    public static final long PULL_CONTEXT_TIMEOUT = SimulationConfig.getInstance().getCommunicateTimeout();
+    public static final long SEARCH_SIMULATOR_TIMEOUT = SimulationConfig.getInstance().getCommunicateTimeout();
 
     public BaseAI(Simulator simulator) {
         this();
@@ -158,7 +159,7 @@ public abstract class BaseAI implements SimulatorAI {
     }
 
     @Override
-    public SimulationContainer getContainer() {
+    public BaseContainer getContainer() {
         return simulator.getContainer();
     }
 }

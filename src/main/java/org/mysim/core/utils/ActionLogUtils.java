@@ -14,9 +14,11 @@ import java.util.List;
 @Component
 public class ActionLogUtils {
     private static IService<ActionLog> actionLogService;
-
-
     @Autowired
+    public ActionLogUtils(IService<ActionLog> service){
+        ActionLogUtils.actionLogService = service;
+    }
+
     public void setActionLogService(IService<ActionLog> service) {
         actionLogService = service;
     }
@@ -42,7 +44,7 @@ public class ActionLogUtils {
         // 查询符合条件的记录并返回
         return actionLogService.list(queryWrapper);
     }
-    public static IPage<ActionLog> getActionLogBySimulatorId(String simulatorId, int pageNum, int pageSize) {
+    public static Page<ActionLog> getActionLogBySimulatorId(String simulatorId, int pageNum, int pageSize) {
         // 创建分页对象
         Page<ActionLog> page = new Page<>(pageNum, pageSize);
 

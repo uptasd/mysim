@@ -4,7 +4,6 @@ import io.camunda.zeebe.client.ZeebeClient;
 import io.camunda.zeebe.client.api.response.ActivatedJob;
 import io.camunda.zeebe.client.api.worker.JobClient;
 import io.camunda.zeebe.client.api.worker.JobWorker;
-import jade.wrapper.StaleProxyException;
 import lombok.extern.slf4j.Slf4j;
 import org.mysim.config.CamundaConfig;
 import org.mysim.core.events.SystemEvents;
@@ -13,15 +12,17 @@ import org.mysim.core.events.action.system.CompleteTask;
 import org.mysim.core.events.action.system.CreateProcess;
 import org.mysim.core.message.SimMessage;
 import org.mysim.core.message.SimMessageFactory;
-import org.mysim.core.rt.container.SimulationContainer;
+import org.mysim.core.rt.container.BaseContainer;
 import org.mysim.core.simulator.EnvironmentSimulator;
 import org.mysim.core.simulator.Simulator;
 import org.mysim.core.simulator.SimulatorAgent;
-import org.mysim.core.simulator.status.SimulatorProperty;
 import org.mysim.core.utils.CamundaUtils;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 @Slf4j
 public class BpmnProcessProxyAI extends BaseAI {
@@ -51,19 +52,34 @@ public class BpmnProcessProxyAI extends BaseAI {
                 .jobType("io.camunda.zeebe:userTask")
                 .handler(this::dispatch)
                 .open();
+        ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+        // 每隔5分钟执行一次清理任务
+        scheduler.scheduleAtFixedRate(this::cleanupEnvs, 0, 5, TimeUnit.SECONDS);
+
     }
 
-    private void openCleaner() {
+
+    private synchronized void cleanupEnvs() {
         //todo
-
+        for (ConcurrentHashMap.Entry<Long, EnvironmentSimulator> entry : envs.entrySet()) {
+            Long key = entry.getKey();
+            EnvironmentSimulator env = entry.getValue();
+            if (CamundaUtils.isProcessComplete(String.valueOf(key))) {
+                System.out.println("流程:" + key + "已完成");
+                env.deregister();
+                envs.remove(key);
+            }
+        }
     }
 
-    private void dispatch(JobClient client, ActivatedJob job) {
+    private synchronized void dispatch(JobClient client, ActivatedJob job) {
+//       log.info("bpmnPoxy 周期为:{}",getSimulatorProperty().getTurn());
+//       log.info("container 周期为:{}",getContainer().getTurn());
         Map<String, Object> input = job.getVariablesAsMap();
         String taskHandler = (String) input.getOrDefault(TASK_HANDLER, null);
         long key = job.getKey();
         if (jobs.containsKey(key)) {
-            log.debug("process:{},已被分配", key);
+            log.info("process:{},已被分配", key);
             return;
         }
         if (taskHandler == null) {
@@ -75,7 +91,6 @@ public class BpmnProcessProxyAI extends BaseAI {
             log.error("无法分配task：{}\n原因：handler为空", job);
             return;
         }
-        log.debug("job dispatcher 已将任务:{},分配给：{},流程ID为:{},任务ID为:{}", job.getElementId(), taskHandler, job.getProcessInstanceKey(), job.getKey());
         String eventName = job.getElementId();
         BpmnTaskInfo payLoad = new BpmnTaskInfo();
         payLoad.setJobKey(key);
@@ -85,6 +100,7 @@ public class BpmnProcessProxyAI extends BaseAI {
         SimMessage simMessage = SimMessageFactory.buildBpmnEventMessage(eventName, payLoad);
 //        log.debug("send msg:{}", simMessage);
         sendMessage(taskHandler, simMessage);
+        log.info("job dispatcher 已将任务:{},分配给：{},流程ID为:{},任务ID为:{}", job.getElementId(), taskHandler, job.getProcessInstanceKey(), job.getKey());
     }
 
     private void loadEnvironment(Long processInstanceKey) {
@@ -94,7 +110,7 @@ public class BpmnProcessProxyAI extends BaseAI {
         EnvironmentSimulator env = new EnvironmentSimulator(String.valueOf(processInstanceKey));
         envs.put(processInstanceKey, env);
 //        SimulatorProperty property = getSimulatorProperty();
-        SimulationContainer container = getContainer();
+        BaseContainer container = getContainer();
         container.loadSimulator(env);
     }
 }

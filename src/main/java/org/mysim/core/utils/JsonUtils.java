@@ -29,7 +29,7 @@ public class JsonUtils {
         mapper.registerModule(module);
     }
 
-    public static  Object deepCopy(Object object) throws IOException, ClassNotFoundException {
+    public static Object deepCopy(Object object) throws IOException, ClassNotFoundException {
         String s = JsonUtils.objectToJson(object);
         Map<String, Object> map = JsonUtils.jsonToMap(s);
         return JsonUtils.mapToObj(map, object.getClass());
@@ -76,6 +76,7 @@ public class JsonUtils {
     }
 
     public static Map<String, Object> jsonToMap(String jsonData) {
+        if (jsonData == null) return new HashMap<>();
         try {
             return mapper.readValue(jsonData, new TypeReference<Map<String, Object>>() {
             });

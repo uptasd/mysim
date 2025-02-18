@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.mysim.core.events.action.external.ExternalEventPayload;
 import org.mysim.core.message.SimMessage;
 import org.mysim.core.message.SimMessageFactory;
-import org.mysim.core.rt.container.SimulationContainer;
+import org.mysim.core.rt.container.BaseContainer;
 import org.mysim.core.simulator.ResourceSimulator;
 import org.mysim.core.simulator.Simulator;
 import org.mysim.core.simulator.ai.ResourceAI;
@@ -23,7 +23,7 @@ public class TestTmp {
     public void test01() throws StaleProxyException {
         Simulator simulator1 = buildRes("test01");
         Simulator simulator2 = buildEventPublisher("BadWeather-publisher");
-        SimulationContainer container = new SimulationContainer();
+        BaseContainer container = new BaseContainer();
         container.loadSimulator(simulator1);
         container.loadSimulator(simulator2);
         for (int i = 0; i < 5; i++) {

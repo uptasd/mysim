@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-org.mysim.config.RedisUtilConfig
+org.mysim.starter.UtilsAutoConfig

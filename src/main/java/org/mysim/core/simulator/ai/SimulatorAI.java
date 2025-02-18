@@ -3,7 +3,7 @@ package org.mysim.core.simulator.ai;
 import org.mysim.core.log.ActionLog;
 import org.mysim.core.events.action.ServiceLog;
 import org.mysim.core.message.SimMessage;
-import org.mysim.core.rt.container.SimulationContainer;
+import org.mysim.core.rt.container.BaseContainer;
 import org.mysim.core.simulator.Simulator;
 import org.mysim.core.simulator.status.SimulatorProperty;
 import org.mysim.core.simulator.status.SimulatorStatus;
@@ -50,6 +50,6 @@ public interface SimulatorAI {
     Map<String, List<String>> searchSimulatorByType(List<String> simulatorTypes);
 
     void doDelete();
-    SimulationContainer getContainer();
+    BaseContainer getContainer();
 
 }

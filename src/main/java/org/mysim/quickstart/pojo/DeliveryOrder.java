@@ -11,4 +11,7 @@ public class DeliveryOrder {
     @TableId
     private int id;
     private LocalDateTime generatedTime;
+    private LocalDateTime finishedTime;
+    private String status;
+
 }

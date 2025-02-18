@@ -30,11 +30,11 @@ public class ResourceAI extends BaseAI {
     public void step() {
         Collection<SimulationTask> tasks = planning(memory.getTasks());
         for (SimulationTask task : tasks) {
+            System.out.println("执行：" + task);
             task.action();
         }
         memory.clearFinishedTask();
     }
-
 
 
     public Collection<SimulationTask> planning(Collection<SimulationTask> tasks) {

@@ -56,6 +56,7 @@ public class SimulatorFactory {
 
     public static List<Simulator> loadAllRes(String folderPath) {
         List<Simulator> ret = new ArrayList<>();
+        if (folderPath == null) return ret;
         try {
             List<String> filenames = getAllJsonFileName(folderPath);
             if (filenames == null) {
@@ -88,9 +89,11 @@ public class SimulatorFactory {
     }
 
     public static List<Simulator> loadSimulators(String resourceFilePath) {
+        List<Simulator> simulators = new ArrayList<>();
+        if (resourceFilePath == null) return simulators;
         List<Object> properties = JsonUtils.resToObj(resourceFilePath, new TypeReference<>() {
         });
-        List<Simulator> simulators = new ArrayList<>();
+
         for (Object simulatorProperty : properties) {
             String simulatorType = ((Map<String, String>) simulatorProperty).getOrDefault("simulatorType", "");
             Class<? extends SimulatorProperty> propertyClass = propertyClassMap.getOrDefault(simulatorType, SimulatorProperty.class);

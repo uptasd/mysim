@@ -1,0 +1,10 @@
+[
+  {
+    "simulatorId": "customer1",
+    "simulatorType": "customer"
+  },
+  {
+    "simulatorId": "customer2",
+    "simulatorType": "customer"
+  }
+]

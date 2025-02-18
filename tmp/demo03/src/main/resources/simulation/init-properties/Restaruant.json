@@ -1,0 +1,17 @@
+[
+  {
+    "simulatorId": "restaurant1",
+    "simulatorType": "restaurant",
+    "location": {
+      "x": 122.075326,
+      "y": 37.536679
+    },
+    "stock": 100,
+    "openingHours": "08:00",
+    "closingTime": "19:00",
+    "processingCapability": 5,
+    "price": 74.0,
+    "label": "韩国料理",
+    "overallRating": 4.0
+  }
+]

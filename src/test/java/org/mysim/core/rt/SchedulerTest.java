@@ -8,7 +8,7 @@ import org.mysim.core.events.action.external.ExternalEventActor;
 import org.mysim.core.events.action.external.ExternalEventPayload;
 import org.mysim.core.message.SimMessage;
 import org.mysim.core.message.SimMessageFactory;
-import org.mysim.core.rt.container.SimulationContainer;
+import org.mysim.core.rt.container.BaseContainer;
 import org.mysim.core.rt.scheduler.ConcurrentScheduler;
 import org.mysim.core.rt.scheduler.SchedulerProperty;
 import org.mysim.core.simulator.ResourceSimulator;
@@ -18,7 +18,6 @@ import org.mysim.core.simulator.ai.ResourceAI;
 import org.mysim.core.simulator.ai.SimulatorAI;
 import org.mysim.core.simulator.config.ActionInfo;
 import org.mysim.core.simulator.status.SimulatorProperty;
-import org.mysim.core.simulator.status.SimulatorStatus;
 import org.mysim.core.task.SimulationTask;
 import org.mysim.core.utils.CamundaUtils;
 import org.mysim.quickstart.simulators.deliveryman.actions.MoveToDeliveryPoint;
@@ -42,7 +41,7 @@ public class SchedulerTest {
         ConcurrentScheduler scheduler = new ConcurrentScheduler(property);
         Simulator simulator1 = buildTestSimulator("test01");
         Simulator simulator2 = buildTestSimulator("test02");
-        SimulationContainer container = new SimulationContainer();
+        BaseContainer container = new BaseContainer();
         container.loadSimulator(simulator1);
         container.loadSimulator(simulator2);
         container.loadSimulator(scheduler);
@@ -57,7 +56,7 @@ public class SchedulerTest {
         Simulator simulator1 = buildTestSimulator("test01");
         Simulator simulator2 = buildTestSimulator("test02");
         Simulator eventPublisher = buildEventPublisher("publisher");
-        SimulationContainer container = new SimulationContainer();
+        BaseContainer container = new BaseContainer();
         container.loadSimulator(simulator1);
         container.loadSimulator(simulator2);
         container.loadSimulator(eventPublisher);
@@ -94,7 +93,7 @@ public class SchedulerTest {
             }
         };
 
-        SimulationContainer container = new SimulationContainer();
+        BaseContainer container = new BaseContainer();
         BpmnProcessProxy dispatcher = new BpmnProcessProxy("bpmnProcessProxyId");
         container.loadSimulator(simulator1);
 //        container.loadSimulator(simulator2);

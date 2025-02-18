@@ -1,0 +1,20 @@
+SimulatorType1:
+  - status: "LowHealth"
+    expression: "health < 10"
+
+  - status: "HighHealth"
+    expression: "health >= 10"
+
+  - status: "HighMana"
+    expression: "mana >= 20"
+
+  - status: "HighSpeed"
+    expression: "speed >= 50"
+
+SimulatorType2:
+  - status: "LowHealth"
+    expression: "health < 20"
+
+  - status: "HighHealth"
+    expression: "health >= 20"
+

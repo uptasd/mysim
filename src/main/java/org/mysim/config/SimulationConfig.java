@@ -4,6 +4,8 @@ import jakarta.annotation.PostConstruct;
 import lombok.Data;
 import lombok.Getter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import java.time.temporal.ChronoUnit;
@@ -11,9 +13,11 @@ import java.time.temporal.ChronoUnit;
 @Data
 @Component
 @ConfigurationProperties(prefix = "simulation.container")
+@Order(Ordered.HIGHEST_PRECEDENCE)
 public class SimulationConfig {
-    private long turn = 0;
+    private volatile long turn = 0;
     private long timeRatio = 1;
+    private long communicateTimeout = 1000;
 
     public enum TimeUnit {
         SECOND,

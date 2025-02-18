@@ -1,0 +1,7 @@
+deliveryman:
+  - status: "lowSpeed"
+    expression: "speed < 15"
+  - status: "normalSpeed"
+    expression: "speed >= 15 && speed <20"
+  - status: "highSpeed"
+    expression: "speed >= 20"

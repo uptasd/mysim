@@ -1,12 +1,11 @@
 package org.mysim.core.simulator;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import jade.wrapper.StaleProxyException;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.mysim.core.message.SimMessage;
 import org.mysim.core.message.SystemMessageFactory;
-import org.mysim.core.rt.container.SimulationContainer;
+import org.mysim.core.rt.container.BaseContainer;
 import org.mysim.core.simulator.ai.ResourceAI;
 import org.mysim.core.simulator.status.SimulatorProperty;
 import org.mysim.core.utils.JsonUtils;
@@ -25,7 +24,7 @@ class EnvironmentSimulatorTest {
         EnvironmentSimulator environmentSimulator = buildEnvironmentSimulator("env1");
         ResourceSimulator publisher1 = buildPublisher("publisher1");
         ResourceSimulator subscriber1 = buildSubscriber("subscriber1");
-        SimulationContainer container = new SimulationContainer();
+        BaseContainer container = new BaseContainer();
         container.loadSimulator(environmentSimulator);
         container.loadSimulator(publisher1);
         container.loadSimulator(subscriber1);

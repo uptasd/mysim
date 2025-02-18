@@ -17,7 +17,7 @@ public class ServiceFactory {
     @Autowired
     public ServiceFactory(ApplicationContext context) {
         Map<String, IService> services = context.getBeansOfType(IService.class);
-        services.forEach((name, service) -> serviceMap.put(name, service));
+        serviceMap.putAll(services);
     }
 
     public static IService getService(String serviceName) {

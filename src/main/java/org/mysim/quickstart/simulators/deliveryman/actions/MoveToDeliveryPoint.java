@@ -27,7 +27,7 @@ public class MoveToDeliveryPoint extends BPMNActor {
         log.info("{} received task:MoveToDeliveryPoint，taskId:{}", property.getSimulatorId(), eventPayLoad.getJobKey());
         Object testKey = getContext("testKey");
         //获取流程的上下文
-        log.info("get context:{}", testKey);
+        log.info("{} get context:{}", property.getSimulatorId(), testKey);
 
     }
 
@@ -40,14 +40,18 @@ public class MoveToDeliveryPoint extends BPMNActor {
 
     @Override
     public boolean isDone() {
+        if(cnt <= 0){
+            System.out.println("move to delivery point done");
+        }
         return cnt <= 0;
     }
 
     @Override
     public void execute(ActionContext context) {
         SimulatorProperty property = getSimulatorProperty();
+        BpmnTaskInfo taskInfo = getTaskInfo();
         cnt--;
-        log.info("{} is moving to delivery point", property.getSimulatorId());
+        log.info("{} is moving to delivery point,taskInfo:{}", property.getSimulatorId(), taskInfo);
     }
 
 }

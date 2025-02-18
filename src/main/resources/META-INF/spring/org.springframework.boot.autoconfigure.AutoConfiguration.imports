@@ -1,1 +1,5 @@
-org.mysim.config.RedisUtilConfig
+org.mysim.starter.UtilsAutoConfig
+org.mysim.starter.SimulationAutoConfiguration
+org.mysim.starter.ActionLogAutoConfiguration
+org.mysim.starter.MybatisPlusAutoConfiguration
+

@@ -1,0 +1,39 @@
+- simulatorType: deliveryman
+  simulatorClass: org.mysim.demo03.simulators.deliveryman.Deliveryman
+  simulatorAIClass: org.mysim.demo03.simulators.deliveryman.DeliverymanAI
+  propertyClass: org.mysim.demo03.simulators.deliveryman.DeliverymanProperty
+  actions:
+    - actionName: MoveToRestaurant
+      actionClass: org.mysim.demo03.simulators.deliveryman.actions.MoveToRestaurant
+      #这个类型可以不写，会自动检测这个子类继承自哪个基类
+      #具体见org.mysim.core.simulator.config.ActionFactory中的getType方法
+      actionType: task
+      subscribedContext: [ ]
+      publishedContext: [ "testKey" ]
+    - actionName: BadWeather
+      actionClass: org.mysim.demo03.simulators.deliveryman.actions.HandleBadWeather
+      actionType: reaction
+    - actionName: MoveToDeliveryPoint
+      actionClass: org.mysim.demo03.simulators.deliveryman.actions.MoveToDeliveryPoint
+      actionType: task
+      subscribedContext: [ "testKey" ]
+      publishedContext: [ ]
+
+- simulatorType: restaurant
+  simulatorClass: org.mysim.demo03.simulators.restaurant.Restaurant
+  simulatorAIClass: org.mysim.demo03.simulators.restaurant.RestaurantAI
+  propertyClass: org.mysim.demo03.simulators.restaurant.RestaurantProperty
+  actions:
+    - actionName: HandleBadWeather
+      actionClass: org.mysim.demo03.simulators.restaurant.actions.HandleBadWeather
+      actionType: reaction
+
+- simulatorType: customer
+  simulatorClass: org.mysim.demo03.simulators.customer.Customer
+  simulatorAIClass: org.mysim.demo03.simulators.customer.CustomerAI
+  propertyClass: org.mysim.demo03.simulators.customer.CustomerProperty
+
+- simulatorType: BadWeather
+  simulatorClass: org.mysim.demo03.simulators.badweather.BadWeather
+  simulatorAIClass: org.mysim.demo03.simulators.badweather.BadWeatherAI
+  propertyClass: org.mysim.demo03.simulators.badweather.BadWeatherProperty
